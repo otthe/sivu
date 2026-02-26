@@ -22,6 +22,8 @@
   <p><?= test ?></p>
   <p><?= backendFunction(); ?></p>
 
+  <p> <?= var_dump($_SESSION ); ?> </p>
+
   <form method="POST" action="/add_user.sivu">
     <?= csrfField($_SESSION) ?>
     <label for="fname">First name:</label><br>

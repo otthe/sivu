@@ -1,0 +1,5 @@
+<?sivu
+  console.log("adding a form!");
+  flash("notice", "Saved!");
+  redirect("/index.sivu"); // throws -> engine returns 303
+?>

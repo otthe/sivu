@@ -7,6 +7,7 @@ const crypto = require("crypto");
 // internals
 const config = require("./config.js");
 const { renderTemplateByName } = require("./lib/render.js");
+const { TemplateRedirect, TemplateExit } = require("./lib/error.js");
 
 const FILE_EXTENSION = ".sivu";
 const APP_403_MESSAGE = "Forbidden.";
@@ -56,6 +57,8 @@ function resolveTemplatePath(requestedPath) {
 function validatePublicTemplateRequest(requestedPath) {
   const { rel } = resolveTemplatePath(requestedPath);
 
+  console.log(rel);
+  
   if (!rel.endsWith(FILE_EXTENSION)) {
     throw new Error("Not a sivu file");
   }
@@ -159,20 +162,62 @@ app.get(sivuRoute, async (req, res) => {
   }
 });
 
+function actionNameFromPage(relPagePath) {
+  // relPagePath like "add_user.sivu" or "users/add_user.sivu"
+  const dir = path.dirname(relPagePath);
+  const base = path.basename(relPagePath);
+  const actionBase = "_" + base;
+  return dir === "." ? actionBase : path.join(dir, actionBase);
+}
+
 app.post(sivuRoute, async (req, res) => {
   try {
-    const rel = validatePublicTemplateRequest(req.path);
-    const html = await renderTemplateByName(rel, req);
-    res.send(html);
-  } catch (error) {
-    const msg = String(error?.message || "");
+    // 1) validate requested public .sivu page (not underscore)
+    const relPage = validatePublicTemplateRequest(req.path);
+
+    // 2) map to underscore action
+    const relAction = actionNameFromPage(relPage);
+
+    // 3) execute action template (it can call flash(), redirect(), etc.)
+    const htmlOrEmpty = await renderTemplateByName(relAction, req);
+
+    // If action produced output and didn't redirect, you can decide what to do:
+    // - send it, or
+    // - default to 204, or
+    // - treat as an error
+    return res.send(htmlOrEmpty ?? "");
+  } catch (err) {
+    if (err instanceof TemplateRedirect) {
+      return res.redirect(err.status, err.location);
+    }
+    if (err instanceof TemplateExit) {
+      return res.send(String(err.message || ""));
+    }
+
+    const msg = String(err?.message || "");
     if (msg.includes("Partial") || msg.includes("traversal") || msg.includes("Not a sivu")) {
       return res.status(403).send(APP_403_MESSAGE);
     }
-    console.error(error);
-    res.status(404).send(APP_404_MESSAGE);
+
+    console.error(err);
+    return res.status(404).send(APP_404_MESSAGE);
   }
 });
+
+// app.post(sivuRoute, async (req, res) => {
+//   try {
+//     const rel = validatePublicTemplateRequest(req.path);
+//     const html = await renderTemplateByName(rel, req);
+//     res.send(html);
+//   } catch (error) {
+//     const msg = String(error?.message || "");
+//     if (msg.includes("Partial") || msg.includes("traversal") || msg.includes("Not a sivu")) {
+//       return res.status(403).send(APP_403_MESSAGE);
+//     }
+//     console.error(error);
+//     res.status(404).send(APP_404_MESSAGE);
+//   }
+// });
 
 // Optional: default 404 for everything else
 app.use((_req, res) => {
