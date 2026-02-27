@@ -8,7 +8,14 @@
 </head>
 <body>
 
-<?= $_YIELD(); ?>
+  <?sivu
+    const db = connect("sqlite", { file: "guests.db" });
+    db.run("CREATE TABLE IF NOT EXISTS guests (id INTEGER PRIMARY KEY, author TEXT, comment TEXT)");
+    console.log("perkele!");
+  ?>
+
+
+  <?= $_YIELD(); ?>
 
 </body>
 </html>

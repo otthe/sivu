@@ -117,6 +117,9 @@ if (config.force_csrf_middleware) {
       const token = req.body?._csrf;
       const expected = req.session?._csrfToken;
 
+      console.log("token: " + token);
+      console.log("expected: " + expected);
+
       if (!isTimingSafeEqual(String(token || ""), String(expected || ""))) {
         return res.status(403).send("Invalid CSRF token");
       }
