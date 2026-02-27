@@ -34,4 +34,28 @@
     <button type="submit">Send</button>
   </form>
 
+  <?sivu
+    const guests = await db.query("SELECT * FROM guests");
+  ?>
+
+  <?sivu for (const guest of guests) { ?>
+    <div class="comment">
+      <h4>
+        <?= htmlspecialchars(guest.author) ?>
+      </h4>
+      <p>
+        <?= htmlspecialchars(guest.comment) ?>
+      </p>
+      <br>
+
+      <form method="POST" action="/delete_user.sivu">
+        <?= csrfField($_SESSION) ?>
+        <input type="hidden" id="id" name="id" value="<?= guest.id; ?>"><br>
+        <button type="submit">Poista</button>
+      </form>
+    
+
+    </div>
+  <?sivu } ?>
+
   <?include "_footer.sivu" ?>

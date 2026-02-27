@@ -11,6 +11,9 @@ const first = $_POST.fname;
 const last = $_POST.lname;
 
 //db.createUser($_POST.fname, $_POST.lname);
+
+db.run("INSERT INTO guests (author, comment) VALUES (?, ?)", [first, last]);
+
 flash("notice", $_POST.fname + " " + $_POST.lname);
 redirect(`/index.sivu?fname=${first}&lname=${last}`);
 ?>

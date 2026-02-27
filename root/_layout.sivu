@@ -17,5 +17,11 @@
 
   <?= $_YIELD(); ?>
 
+  <?sivu 
+    sharedValue = "has changed again after yielding!!";
+  ?>
+
+  <p><?= sharedValue; ?></p>
+
 </body>
 </html>

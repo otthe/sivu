@@ -1,0 +1,11 @@
+<?sivu
+  //db.run("INSERT INTO guests (author, comment) VALUES (?, ?)", [first, last]);
+
+  db.run(
+    "DELETE FROM guests WHERE id = ?",
+    [$_POST.id]
+  );
+
+  flash("danger", $_POST.id);
+  redirect(`/index.sivu`);
+?>
