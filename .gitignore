@@ -4,3 +4,4 @@ todo.txt
 dump.txt
 *.sqlite3
 *.db
+dist
