@@ -9,6 +9,7 @@ module.exports = {
   root_file: 'index.sivu',
   force_csrf_middleware: true,
   session_secret: process.env.SESSION_SECRET || 'thisismysecret',
+  cookie_secure: false, //requires https
   use_layout_file: true,
   data_dir_location: 'data',
 };
