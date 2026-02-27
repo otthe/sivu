@@ -4,6 +4,4 @@ todo.txt
 dump.txt
 *.sqlite3
 *.db
-render2.txt
 dist
-package2.json
