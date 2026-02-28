@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "build": "node build.mjs",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "dev": "node build.mjs --watch"
   },
   "dependencies": {
     "better-sqlite3": "^11.0.0",
