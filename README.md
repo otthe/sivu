@@ -2,7 +2,7 @@
 
 ## todo:
 - make flash BIF's more neat?
-- add config-setting for auto-escaping html (+ unsafe_html -function to the context)
+- ~~ add config-setting for auto-escaping html (+ unsafe_html -function to the context) ~~
 - remove useless std libs from the context creation (it was probably unnecessary to add most of them in the first place)
 - move BIF's to their own API?
 - make the parser better --> it will probably explode from lightest deviations and won't even give clear error messages
