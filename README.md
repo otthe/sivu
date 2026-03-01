@@ -1,4 +1,6 @@
-# Example Code:
+# Not production ready!
+
+## Example Code:
 
 ```html
   <?sivu
@@ -35,7 +37,7 @@
       <form method="POST" action="/delete_todo.sivu">
         <?= csrfField($_SESSION) ?>
         <input type="hidden" id="id" name="id" value="<?= todo.id; ?>"><br>
-        <button type="submit">Poista</button>
+        <button type="submit">Delete</button>
       </form>
     </div>
   <?sivu } ?>
@@ -82,8 +84,8 @@ if (user) {
 - (optional) built-in form validations (front + backend) --> less boilerplate coding for end users?
 
 ## philosophy:
-- ergonomic version of old PHP
-- only what is necessary
+- Wrap nodeJs ecosystem into old PHP format
+- Avoid common security pitfalls
 - allow users to cut corners and take an glass cannon approach
 
 ## things to consider:
