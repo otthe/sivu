@@ -11,6 +11,7 @@ const {
   INDEX_TEMPLATE,
   ADD_TODO_TEMPLATE,
   DELETE_TODO_TEMPLATE,
+  JAVASCRIPT_TEMPLATE,
   GITIGNORE_TEMPLATE,
   ENV_TEMPLATE } = require("../lib/scaffold.js");
 
@@ -72,6 +73,7 @@ function initProject(projectName) {
   writeFileSafe(path.join(abs, "root", "index.sivu"), INDEX_TEMPLATE);
   writeFileSafe(path.join(abs, "root", "_add_todo.sivu"), ADD_TODO_TEMPLATE);
   writeFileSafe(path.join(abs, "root", "_delete_todo.sivu"), DELETE_TODO_TEMPLATE);
+  writeFileSafe(path.join(abs, "root", "format.js"), JAVASCRIPT_TEMPLATE);
 
   writeFileSafe(path.join(abs, ".env"), ENV_TEMPLATE);
   writeFileSafe(path.join(abs, ".gitignore"), GITIGNORE_TEMPLATE);
