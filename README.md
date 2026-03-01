@@ -1,8 +1,68 @@
+# Example:
+
+```html
+  <?sivu
+    const { formatDate } = require('./format.js');
+    
+    // 'let' and 'const' are actually 'var's
+    // top-level variables and functions are global-scoped
+    let title = "Sivu Todo Example";
+    const todos = await db.query("SELECT * FROM todos");
+  ?>
+  <?include "_header.sivu"?>
+
+  <div class="todo-form">
+    <form method="POST" action="/add_todo.sivu">
+      <?= csrfField($_SESSION) ?>
+      <label for="taskname">Task name</label><br>
+      <input type="text" id="taskname" name="taskname"><br>
+      <label for="taskdesc">Task description:</label><br>
+      <input type="text" id="taskdesc" name="taskdesc"><br>
+      <label for="duedate">Task duedate</label><br>
+      <input type="datetime-local" id="duedate" name="duedate"><br>
+      <button type="submit">Add todo</button>
+    </form>
+  </div>
+
+  <?sivu for (const todo of todos) { ?>
+    <div class="todo">
+      <h4>
+        <?= todo.task_name ?>
+      </h4>
+      <p>
+        <?= formatDate(todo.due) ?>
+      </p>
+      <form method="POST" action="/delete_todo.sivu">
+        <?= csrfField($_SESSION) ?>
+        <input type="hidden" id="id" name="id" value="<?= todo.id; ?>"><br>
+        <button type="submit">Poista</button>
+      </form>
+    </div>
+  <?sivu } ?>
+
+<?sivu
+$_SESSION.user = {
+  name: "Testi Testinen",
+  isAdmin: true
+}
+const user = $_SESSION.user;
+console.log(user);
+?>
+
+<?sivu
+if (user) {
+  echo(html("<p>Welcome, " + user.name + "</p>"));
+} else {
+  echo(html('<p class="error">You are not logged in.</p>'));
+}
+?>
+```
+
 # Notes:
 
 ## todo:
 - make flash BIF's more neat?
-- ~~ add config-setting for auto-escaping html (+ unsafe_html -function to the context) ~~
+- ~~add config-setting for auto-escaping html (+ unsafe_html -function to the context)~~
 - remove useless std libs from the context creation (it was probably unnecessary to add most of them in the first place)
 - move BIF's to their own API?
 - make the parser better --> it will probably explode from lightest deviations and won't even give clear error messages
