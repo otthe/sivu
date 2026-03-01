@@ -29,23 +29,25 @@
 - npm run build
 - npm link
 
-## user project initialization
+## user project init:
 package.json:
 ```json
 {
-  "name": "my-sivu-app",
+  "name": "sivu-project",
   "private": true,
   "scripts": {
-    "dev": "sivu",
-    "start": "sivu"
+    "dev": "sivu dev",
+    "start": "sivu start"
   },
   "dependencies": {
-    "@sivu/framework": "^0.0.1"
+    "@sivu/framework": "^0.0.1",
+    "dotenv": "^17.3.1"
   }
 }
+
 ```
+- sivu init project_name (makes the folders but also causes some failure because it's not npm package rn and needs local link)
+- npm link @sivu/framework
 - npm i
 - npm run dev
 
-- npm link @sivu/framework
-- npm run dev
