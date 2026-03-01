@@ -61,6 +61,12 @@ if (user) {
 # Notes:
 
 ## todo:
+- path.startsWith might be unsecure on windows
+- allow users to perform session_start and session_destroy
+- add helmet
+- add rate limiting settings
+- make sure .sivu files are read only and that user content should never be inserted into root
+- include "app.disable("x-powered-by")"
 - make flash BIF's more neat?
 - ~~add config-setting for auto-escaping html (+ unsafe_html -function to the context)~~
 - remove useless std libs from the context creation (it was probably unnecessary to add most of them in the first place)
