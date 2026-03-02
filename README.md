@@ -4,7 +4,7 @@
 
 ```html
   <?sivu
-    const { formatDate } = require('./format.js');
+    const { formatDate } = await importModule("./format.js");
     
     // 'let' and 'const' are actually 'var's
     // top-level variables and functions are global-scoped
@@ -18,8 +18,6 @@
       <?= csrfField($_SESSION) ?>
       <label for="taskname">Task name</label><br>
       <input type="text" id="taskname" name="taskname"><br>
-      <label for="taskdesc">Task description:</label><br>
-      <input type="text" id="taskdesc" name="taskdesc"><br>
       <label for="duedate">Task duedate</label><br>
       <input type="datetime-local" id="duedate" name="duedate"><br>
       <button type="submit">Add todo</button>
