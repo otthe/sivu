@@ -63,6 +63,7 @@ if (user) {
 # Notes:
 
 ## todo:
+- on startup -> calculate checksum for every root file to prevent illegal files from being executed
 - path.startsWith might be unsecure on windows
 - allow users to perform session_start and session_destroy
 - add helmet
