@@ -4,10 +4,9 @@
 
 ```html
   <?sivu
-    const { formatDate } = await importModule("./format.js");
+    const { formatDate } = await $importModule("./format.js");
     
-    // 'let' and 'const' are actually 'var's
-    // top-level variables and functions are global-scoped
+    // top level variables are globally scoped
     let title = "Sivu Todo Example";
     const todos = await db.query("SELECT * FROM todos");
   ?>
@@ -15,7 +14,7 @@
 
   <div class="todo-form">
     <form method="POST" action="/add_todo.sivu">
-      <?= csrfField($_SESSION) ?>
+      <?= $csrfField($_SESSION) ?>
       <label for="taskname">Task name</label><br>
       <input type="text" id="taskname" name="taskname"><br>
       <label for="duedate">Task duedate</label><br>
@@ -33,7 +32,7 @@
         <?= formatDate(todo.due) ?>
       </p>
       <form method="POST" action="/delete_todo.sivu">
-        <?= csrfField($_SESSION) ?>
+        <?= $csrfField($_SESSION) ?>
         <input type="hidden" id="id" name="id" value="<?= todo.id; ?>"><br>
         <button type="submit">Delete</button>
       </form>
@@ -51,9 +50,9 @@ console.log(user);
 
 <?sivu
 if (user) {
-  echo(html("<p>Welcome, " + user.name + "</p>"));
+  $echo($html("<p>Welcome, " + user.name + "</p>"));
 } else {
-  echo(html('<p class="error">You are not logged in.</p>'));
+  $echo($html('<p class="error">You are not logged in.</p>'));
 }
 ?>
 ```
@@ -61,7 +60,8 @@ if (user) {
 # Notes:
 
 ## todo:
-- on startup -> calculate checksum for every root file to prevent illegal files from being executed
+- add session helpers
+- add file upload helpers
 - path.startsWith might be unsecure on windows
 - allow users to perform session_start and session_destroy
 - add helmet
@@ -71,10 +71,9 @@ if (user) {
 - make flash BIF's more neat?
 - ~~add config-setting for auto-escaping html (+ unsafe_html -function to the context)~~
 - remove useless std libs from the context creation (it was probably unnecessary to add most of them in the first place)
-- move BIF's to their own API?
 - make the parser better --> it will probably explode from lightest deviations and won't even give clear error messages
 - BUILD FLEXIBLE AND EASY TO MAINTAIN DEBUGGER/ERROR HANDLING LAYERS (userspace / internal)
-- consider renaming superglobals and BIF's 
+- ~~consider renaming superglobals and BIF's~~ 
 - test memory usage on large amount of cached templates
 - test cpu usage when caching templates vs not caching them
 - WRITE A LOT OF TESTS!!! espesially for file access
@@ -88,9 +87,11 @@ if (user) {
 - allow users to cut corners and take an glass cannon approach
 
 ## things to consider:
-- let and consts are evaluated as vars (due to block scoping issues)
-- $_ - starting variables and functions are superglobals
+- Superglobals are marked with $_-prefix
+- Built-in functions are marked with $-prefix
 - _layout.sivu is special file where ```<?= $_YIELD(); ?>``` must be called
+- .sivu files with "_"-prefix are either partials or actions that cannot be accessed directly
+- when calling `_some_action_method.sivu` in code, for example in form submission, you should leave out the "_" -prefix
 
 ## local build steps
 - npm run build

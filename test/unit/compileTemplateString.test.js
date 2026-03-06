@@ -39,10 +39,11 @@ function hasLine(code, substring) {
 
 test("compiler emits __out initialization + echo/print/println helpers", () => {
   const code = compileTemplateString("Hello");
+  console.log(code);
   expect(code).toMatch(/var __out = "";\n/);
-  expect(code).toMatch(/function echo\(/);
-  expect(code).toMatch(/function print\(/);
-  expect(code).toMatch(/function println\(/);
+  expect(code).toMatch(/function $echo\(/);
+  expect(code).toMatch(/function $print\(/);
+  expect(code).toMatch(/function $println\(/);
   expect(code).toMatch(/return __out;$/);
 });
 
@@ -108,7 +109,7 @@ test("<?sivu blocks can be interleaved with literals", async () => {
 });
 
 test("echo() writes via __toHtml()", async () => {
-  const tpl = `<?sivu echo("<b>Hi</b>"); ?>`;
+  const tpl = `<?sivu $echo("<b>Hi</b>"); ?>`;
   const out = await runTemplate(tpl, {
     __toHtml: (v) => String(v).replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
   });
@@ -116,13 +117,13 @@ test("echo() writes via __toHtml()", async () => {
 });
 
 test("println() adds newline", async () => {
-  const tpl = `<?sivu println("a"); println("b"); ?>`;
+  const tpl = `<?sivu $println("a"); $println("b"); ?>`;
   const out = await runTemplate(tpl);
   expect(out).toBe("a\nb\n");
 });
 
 test("print() returns 1 and appends once", async () => {
-  const tpl = `<?sivu var r = print("x"); ?><?= r ?>`;
+  const tpl = `<?sivu var r = $print("x"); ?><?= r ?>`;
   const out = await runTemplate(tpl);
   expect(out).toBe("x1");
 });
