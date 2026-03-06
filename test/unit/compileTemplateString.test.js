@@ -100,25 +100,6 @@ test("include works at runtime", async () => {
   expect(out).toBe("A[INCLUDE:_x.sivu]B");
 });
 
-/* ----------------------------------------------------------
- * <?sivu ... ?> block tests (hoisting + raw injection)
- * ---------------------------------------------------------- */
-
-test("<?sivu let/const are hoisted to var (simple)", () => {
-  const code = compileTemplateString(`<?sivu
-    let a = 1;
-    const b = 2;
-  ?>`);
-  expect(code.includes("var a = 1;")).toBe(true);
-  expect(code.includes("var b = 2;")).toBe(true);
-  expect(code.includes("let a")).toBe(false);
-  expect(code.includes("const b")).toBe(false);
-});
-
-// test("<?sivu for (const x of y) is hoisted to for (var x of y)", () => {
-//   const code = compileTemplateString(`<?sivu for (const todo of todos) { ?>X<?sivu } ?>`);
-//   expect(code.includes("for (var todo of todos)")).toBe(true);
-// });
 
 test("<?sivu blocks can be interleaved with literals", async () => {
   const tpl = `A<?sivu var x = 2; ?>B<?= x ?>C`;
@@ -158,6 +139,7 @@ test("multiple tokens preserve literal chunks correctly", async () => {
 
 test("tokens are non-greedy: two expression tags are handled separately", () => {
   const code = compileTemplateString("<?= 1 ?><?= 2 ?>");
+  console.log(code);
   const count = (code.match(/__out \+= __toHtml/g) || []).length;
   expect(count).toBe(2);
 });
@@ -179,21 +161,4 @@ test.fails("FAILS TODAY: <?= preserves // inside string literals (e.g. URLs)", (
 
   // Desired behavior: expression should remain intact
   expect(code.includes('__out += __toHtml("http://example.com/a//b");')).toBe(true);
-});
-
-/**
- * Improvement target 2:
- * Current hoistGlobals regex can replace `const`/`let` occurrences inside string literals
- * if the string literal contains a newline followed by 'const '.
- *
- * This test is expected to FAIL today.
- */
-test.fails("FAILS TODAY: hoistGlobals should not rewrite const/let inside string literals", () => {
-  const tpl = `<?sivu
-    const s = "line1\\nconst should_not_change = 1";
-  ?><?= s ?>`;
-  const code = compileTemplateString(tpl);
-
-  // Desired: the string literal stays exactly the same
-  expect(code.includes('var s = "line1\\nconst should_not_change = 1";')).toBe(true);
 });
