@@ -4,7 +4,7 @@
 
 ```html
   <?sivu
-    const { formatDate } = await $importModule("./format.js");
+    const { formatDate } = await $import("./format.js");
     
     // top level variables are globally scoped
     let title = "Sivu Todo Example";
@@ -12,19 +12,16 @@
   ?>
   <?include "_header.sivu"?>
 
-  <div class="todo-form">
-    <form method="POST" action="/add_todo.sivu">
-      <?= $csrfField($_SESSION) ?>
-      <label for="taskname">Task name</label><br>
-      <input type="text" id="taskname" name="taskname"><br>
-      <label for="duedate">Task duedate</label><br>
-      <input type="datetime-local" id="duedate" name="duedate"><br>
-      <button type="submit">Add todo</button>
-    </form>
-  </div>
+  <form method="POST" action="/add_todo.sivu">
+    <?= $csrf($_SESSION) ?>
+    <label for="taskname">Task name</label><br>
+    <input type="text" id="taskname" name="taskname"><br>
+    <label for="duedate">Task duedate</label><br>
+    <input type="datetime-local" id="duedate" name="duedate"><br>
+    <button type="submit">Add todo</button>
+  </form>
 
   <?sivu for (const todo of todos) { ?>
-    <div class="todo">
       <h4>
         <?= todo.task_name ?>
       </h4>
@@ -32,11 +29,10 @@
         <?= formatDate(todo.due) ?>
       </p>
       <form method="POST" action="/delete_todo.sivu">
-        <?= $csrfField($_SESSION) ?>
+        <?= $csrf($_SESSION) ?>
         <input type="hidden" id="id" name="id" value="<?= todo.id; ?>"><br>
         <button type="submit">Delete</button>
       </form>
-    </div>
   <?sivu } ?>
 
 <?sivu
