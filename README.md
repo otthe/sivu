@@ -5,11 +5,11 @@
 ```html
   <?sivu
     const { formatDate } = await $import("./format.js");
-    
     // top level variables are globally scoped
     let title = "Sivu Todo Example";
     const todos = await db.query("SELECT * FROM todos");
   ?>
+
   <?include "_header.sivu"?>
 
   <form method="POST" action="/add_todo.sivu">
@@ -18,16 +18,12 @@
     <input type="text" id="taskname" name="taskname"><br>
     <label for="duedate">Task duedate</label><br>
     <input type="datetime-local" id="duedate" name="duedate"><br>
-    <button type="submit">Add todo</button>
+    <button type="submit">Add Todo</button>
   </form>
 
   <?sivu for (const todo of todos) { ?>
-      <h4>
-        <?= todo.task_name ?>
-      </h4>
-      <p>
-        <?= formatDate(todo.due) ?>
-      </p>
+      <h4><?= todo.task_name ?></h4>
+      <?= formatDate(todo.due) ?>
       <form method="POST" action="/delete_todo.sivu">
         <?= $csrf($_SESSION) ?>
         <input type="hidden" id="id" name="id" value="<?= todo.id; ?>"><br>
@@ -36,20 +32,18 @@
   <?sivu } ?>
 
 <?sivu
-$_SESSION.user = {
-  name: "Testi Testinen",
-  isAdmin: true
-}
-const user = $_SESSION.user;
-console.log(user);
-?>
+  $_SESSION.user = {
+    name: "Testi Testinen",
+    isAdmin: true
+  }
+  const user = $_SESSION.user;
+  console.log(user);
 
-<?sivu
-if (user) {
-  $echo($html("<p>Welcome, " + user.name + "</p>"));
-} else {
-  $echo($html('<p class="error">You are not logged in.</p>'));
-}
+  if (user) {
+    $echo($html("<p>Welcome, " + user.name + "</p>"));
+  } else {
+    $echo($html('<p class="error">You are not logged in.</p>'));
+  }
 ?>
 ```
 
