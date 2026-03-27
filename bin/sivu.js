@@ -48,7 +48,7 @@ function initProject(projectName) {
 
   const abs = path.resolve(process.cwd(), projectName);
 
-  // Prevent nuking an existing folder
+  //prevent nuking an existing folder
   fs.mkdirSync(abs, { recursive: true });
   if (!dirLooksEmpty(abs)) {
     throw new Error(`Target directory is not empty: ${abs}`);
@@ -82,10 +82,8 @@ function initProject(projectName) {
   writeFileSafe(path.join(abs, ".env"), ENV_TEMPLATE);
   writeFileSafe(path.join(abs, ".gitignore"), GITIGNORE_TEMPLATE);
 
-  // data dir (matches default config)
   fs.mkdirSync(path.join(abs, "data"), { recursive: true });
 
-  // Install dependencies (framework + dotenv)
   console.log("Installing dependencies (npm install)...");
   runNpmInstall(abs);
 

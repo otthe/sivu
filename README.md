@@ -3,33 +3,33 @@
 ## Example Code:
 
 ```html
-  <?sivu
-    const { formatDate } = await $import("./format.js");
-    // top level variables are globally scoped
-    let title = "Sivu Todo Example";
-    const todos = await db.query("SELECT * FROM todos");
-  ?>
+<?sivu
+  const { formatDate } = await $import("./format.js");
+  // top level variables are globally scoped
+  let title = "Sivu Todo Example";
+  const todos = await db.query("SELECT * FROM todos");
+?>
 
-  <?include "_header.sivu"?>
+<?include "_header.sivu"?>
 
-  <form method="POST" action="/add_todo.sivu">
-    <?= $csrf($_SESSION) ?>
-    <label for="taskname">Task name</label><br>
-    <input type="text" id="taskname" name="taskname"><br>
-    <label for="duedate">Task duedate</label><br>
-    <input type="datetime-local" id="duedate" name="duedate"><br>
-    <button type="submit">Add Todo</button>
-  </form>
+<form method="POST" action="/add_todo.sivu">
+  <?= $csrf($_SESSION) ?>
+  <label for="taskname">Task name</label><br>
+  <input type="text" id="taskname" name="taskname"><br>
+  <label for="duedate">Task duedate</label><br>
+  <input type="datetime-local" id="duedate" name="duedate"><br>
+  <button type="submit">Add Todo</button>
+</form>
 
-  <?sivu for (const todo of todos) { ?>
-      <h4><?= todo.task_name ?></h4>
-      <?= formatDate(todo.due) ?>
-      <form method="POST" action="/delete_todo.sivu">
-        <?= $csrf($_SESSION) ?>
-        <input type="hidden" id="id" name="id" value="<?= todo.id; ?>"><br>
-        <button type="submit">Delete</button>
-      </form>
-  <?sivu } ?>
+<?sivu for (const todo of todos) { ?>
+    <h4><?= todo.task_name ?></h4>
+    <?= formatDate(todo.due) ?>
+    <form method="POST" action="/delete_todo.sivu">
+      <?= $csrf($_SESSION) ?>
+      <input type="hidden" id="id" name="id" value="<?= todo.id; ?>"><br>
+      <button type="submit">Delete</button>
+    </form>
+<?sivu } ?>
 
 <?sivu
   $_SESSION.user = {
