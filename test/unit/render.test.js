@@ -36,7 +36,8 @@ function createRuntime(overrides = {}) {
       autoescape_html: true,
       allow_pretty_urls: true,
       session_secret: process.env.SESSION_SECRET || "thisismysecret",
-      cookie_secure: false // requires https
+      cookie_secure: false, // requires https
+      ...overrides
     }
   };
 }
