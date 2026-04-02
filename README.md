@@ -58,38 +58,8 @@
 # Notes:
 
 ## todo:
-- add session helpers
-- add file upload helpers
-- path.startsWith might be unsecure on windows
-- allow users to perform session_start and session_destroy
-- add helmet
-- add rate limiting settings
-- make sure .sivu files are read only and that user content should never be inserted into root
-- include "app.disable("x-powered-by")"
-- make flash BIF's more neat?
-- ~~add config-setting for auto-escaping html (+ unsafe_html -function to the context)~~
-- remove useless std libs from the context creation (it was probably unnecessary to add most of them in the first place)
-- make the parser better --> it will probably explode from lightest deviations and won't even give clear error messages
-- BUILD FLEXIBLE AND EASY TO MAINTAIN DEBUGGER/ERROR HANDLING LAYERS (userspace / internal)
-- ~~consider renaming superglobals and BIF's~~ 
-- test memory usage on large amount of cached templates
-- test cpu usage when caching templates vs not caching them
-- WRITE A LOT OF TESTS!!! espesially for file access
-- (optional) make the app factory support multiple apps running on same server
-  (in this case i should make sure that templates are not cached globally)
-- (optional) built-in form validations (front + backend) --> less boilerplate coding for end users?
-
-## philosophy:
-- Wrap nodeJs ecosystem into old PHP format
-- Avoid common security pitfalls
-- allow users to cut corners and take an glass cannon approach
-
-## things to consider:
-- Superglobals are marked with $_-prefix
-- Built-in functions are marked with $-prefix
-- _layout.sivu is special file where ```<?= $_YIELD(); ?>``` must be called
-- .sivu files with "_"-prefix are either partials or actions that cannot be accessed directly
-- when calling `_some_action_method.sivu` in code, for example in form submission, you should leave out the "_" -prefix
+- public paths break on inner path params
+- make sure csrf is only required on form submissions
 
 ## local build steps
 - npm run build
