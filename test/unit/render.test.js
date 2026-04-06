@@ -37,6 +37,7 @@ function createRuntime(overrides = {}) {
       allow_pretty_urls: true,
       session_secret: process.env.SESSION_SECRET || "thisismysecret",
       cookie_secure: false, // requires https
+      sqlite_wal_mode: true,
       ...overrides
     }
   };
@@ -47,8 +48,8 @@ function createApp(runtime) {
 
   app.get("/:file", async (req, res, next) => {
     try {
-      const html = await renderTemplateByName(req.params.file, req, runtime);
-      res.send(html);
+      const result = await renderTemplateByName(req.params.file, req, runtime);
+      res.send(result.body);
     } catch (err) {
       next(err);
     }

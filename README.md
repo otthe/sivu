@@ -61,6 +61,46 @@
 ?>
 ```
 
+## test.json.sivu
+```html
+<?meta  
+  useLayout false
+  rateLimit 5
+  rateWindow 5000 
+?>
+<?sivu
+  $header('content-type', 'application/json');
+
+  const obj = {};
+  for (let i = 0; i < 100; i++) {
+    obj["field " + i] = "value " + i;
+  }
+
+  $echo($raw(JSON.stringify(obj)));
+?>
+```
+## sitemap.xml.sivu
+```html
+<?meta  
+  useLayout false 
+?>
+<?sivu 
+  const urls = ['/', '/about', '/login', '/register', '/contact']; 
+  $header('content-type', 'application/xml');
+  $status(200);
+?>
+<?xml version="1.0" encoding="UTF-8"?> 
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <?sivu for (const u of urls) { ?>
+    <url>
+      <loc>localhost:3000<?= $raw(u); ?></loc>
+      <changefreq>weekly</changefreq>
+      <priority>0.7</priority>
+    </url>
+  <?sivu } ?>
+</urlset>
+```
+
 # Notes:
 
 ## todo:
